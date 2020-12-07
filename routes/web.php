@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,15 +36,14 @@ Route::post('profile', 'App\Http\Controllers\ProfileController@update');
 Route::get('history', 'App\Http\Controllers\HistoryController@index');
 Route::get('history/{id}', 'App\Http\Controllers\HistoryController@detail');
 
-Route::get('/admin', 'App\Http\Controllers\AdminController@index');
-Route::get('/admin-login', 'App\Http\Controllers\Auth\AdminLoginController@showLoginForm');
-Route::post('admin-login',['as'=>'admin-login','uses'=>'App\Http\Controllers\Auth\AdminLoginController@Login']);
+// Route::get('/admin', 'App\Http\Controllers\AdminController@index');
+// Route::get('/admin-login', 'App\Http\Controllers\Auth\AdminLoginController@showLoginForm');
+// Route::post('admin-login',['as'=>'admin-login','uses'=>'App\Http\Controllers\Auth\AdminLoginController@Login']);
 
-
-Auth::routes();
+Route::group(['prefix' => 'admin', 'middleware' => 'is_admin'], function () {
+    Route::get('/', [AdminController::class, 'index']);
+});
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
